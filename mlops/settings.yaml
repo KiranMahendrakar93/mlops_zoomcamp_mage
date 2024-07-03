@@ -1,4 +1,6 @@
 projects:
+  mlops_zoomcamp_mage:
+    path: mlops_zoomcamp_mage
   unit_0_setup: {}
   unit_1_data_preparation: {}
   unit_2_training: {}
