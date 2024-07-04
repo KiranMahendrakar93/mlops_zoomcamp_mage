@@ -1,7 +1,8 @@
 from utils_fn.data_preparation.cleaning import *
-from utils_fn.data_preparation.preprocessing import prep
 from utils_fn.data_preparation.splitting import *
+from utils_fn.data_preparation.transforming import *
 from typing import Tuple
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 
 
 if 'transformer' not in globals():
@@ -31,10 +32,11 @@ def transform(df: pd.DataFrame) -> Tuple[
     # Specify your transformation logic here
 
     df = clean(df)
-    return prep(df)
-    # X_train, X_test, y_train, y_test = split(df)
+    df, label_encoders, std_scalers = preprocess(df)
+    
+    X_train, X_test, y_train, y_test = split(df)
 
-    # return X_train, X_test, y_train, y_test
+    return X_train, X_test, y_train, y_test, label_encoders, std_scalers
 
 
 @test

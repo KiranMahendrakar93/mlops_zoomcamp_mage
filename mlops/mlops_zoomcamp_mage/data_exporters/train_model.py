@@ -1,6 +1,21 @@
 import mlflow
 import pickle
 
+from sklearn.metrics import accuracy_score, confusion_matrix, roc_curve
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier, AdaBoostClassifier
+from sklearn.naive_bayes import GaussianNB, MultinomialNB
+from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.model_selection import RepeatedStratifiedKFold, RandomizedSearchCV, GridSearchCV, train_test_split
+from scipy.stats import loguniform
+
+# Silence Warnings (optional)
+import warnings
+warnings.filterwarnings('ignore')
+
 #mlflow.set_tracking_uri("sqlite:///mlflow.db")
 mlflow.set_tracking_uri("http://mlflow:5000")
 mlflow.set_experiment("mlops_zoomcamp_experiment")
@@ -24,7 +39,17 @@ def export_data(data, *args, **kwargs):
     """
     # Specify your data exporting logic here
 
-    X_train, X_test, y_train, y_test = data
+    X_train, X_test, y_train, y_test, label_encoders, std_scalers = data
+
+    # Take dump of label encoders
+    for col, le in label_encoders.items():
+        with open(f'mlops/dumps/misc/{col}_label_encoder.pkl', 'wb') as f:
+            pickle.dump(le, f)
+
+    # Take dump of standard scaler
+    for col, std in std_scalers.items():
+        with open(f'mlops/dumps/misc/{col}_standard_scaler.pkl', 'wb') as f:
+            pickle.dump(std, f)
 
     # Dictionary of classification models
     classification_models = {
@@ -65,7 +90,7 @@ def export_data(data, *args, **kwargs):
 
             # Save the trained model using pickle
             model_filename = f"{name.replace(' ', '_')}_model.pkl"
-            with open(f"/dumps/models/{model_filename}", "wb") as f:
+            with open(f"mlops/dumps/models/{model_filename}", "wb") as f:
                 pickle.dump(clf, f)
 
             mlflow.sklearn.log_model(sk_model=clf, artifact_path="models")
