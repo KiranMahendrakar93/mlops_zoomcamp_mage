@@ -3,7 +3,7 @@ from sklearn.preprocessing import StandardScaler, LabelEncoder
 from typing import Tuple, Dict
 
 
-def prep(df: pd.DataFrame) -> pd.DataFrame:
+def prepare(df: pd.DataFrame) -> pd.DataFrame:
     
     #  numeric and categoric columns
     columns = list(df.columns)
@@ -29,6 +29,4 @@ def prep(df: pd.DataFrame) -> pd.DataFrame:
         df[column] = scaler.fit_transform(df[[column]])
         std_scalers[column] = scaler
     
-    print(std_scalers[0])
-
     return df
