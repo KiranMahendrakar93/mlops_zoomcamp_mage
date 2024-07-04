@@ -17,7 +17,7 @@ def load_data(*args, **kwargs):
         Anything (e.g. data frame, dictionary, array, int, str, etc.)
     """
     # Specify your data loading logic here
-   url = f"https://raw.githubusercontent.com/KiranMahendrakar93/mlops_zoomcamp_project/main/data/Student_performance_data.csv"
+    url = f"https://raw.githubusercontent.com/KiranMahendrakar93/mlops_zoomcamp_project/main/data/Student_performance_data.csv"
 
     response = requests.get(url)
     if response.status_code == 200:
